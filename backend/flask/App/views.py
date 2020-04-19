@@ -7,7 +7,7 @@ api = Api(api_blueprint)
 
 
 def init_router(app):
-    app.register_blueprint(api_blueprint, url_prefix='/api')
+    app.register_blueprint(api_blueprint)
 
 
 @api_blueprint.route("/")
