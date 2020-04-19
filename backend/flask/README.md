@@ -1,4 +1,4 @@
-# How to use
+# How to use without docker
 
 ```bash
 pip install -r requirements.txt

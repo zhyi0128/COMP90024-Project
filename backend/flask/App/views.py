@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify
-from App.ext import fruits
 from flask_restful import Api, Resource
 from App.analysis import *
 
