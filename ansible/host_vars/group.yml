@@ -1,0 +1,51 @@
+# Common vars
+availability_zone: melbourne-qh2-uom
+
+# Volume
+volumes: 
+  # - vol_name: volumeA
+  #   vol_size: 70
+  - vol_name: volumeB
+    vol_size: 70
+  # - vol_name: volumeC
+  #   vol_size: 70
+  # - vol_name: volumeWeb
+  #   vol_size: 30
+
+# Security group
+security_groups:
+  - name: HTTP
+    description: Allows HTTP (port 80) and HTTPS (port 443)
+    protocol: tcp
+    port_range_min: 80
+    port_range_max: 80
+    remote_ip_prefix: 0.0.0.0/0
+  - name: SSH
+    description: Allow SSH (port 22)
+    protocol: tcp
+    port_range_min: 22
+    port_range_max: 22
+    remote_ip_prefix: 0.0.0.0/0
+  - name: couchDB
+    description: Open port 5984 for couchDB
+    protocol: tcp
+    port_range_min: 5984
+    port_range_max: 5984
+    remote_ip_prefix: 0.0.0.0/0
+  - name: web_port
+    description: Open port 5000 for flask
+    protocol: tcp
+    port_range_min: 5000
+    port_range_max: 5000
+    remote_ip_prefix: 0.0.0.0/0
+
+# Instance
+instance_name: 
+  - name: test_couchdb
+    volumes: Volume-B
+
+# instance_image: 703d4362-dea8-425b-8654-313d50d40e03  # Ubuntu 18.04 LTS (Bionic) amd64 (with Docker)
+instance_image: 45225edb-66d8-4fd0-bf41-132a31a18166   # NeCTAR Ubuntu 18.04 LTS (Bionic) amd64
+instance_key_name: yml
+# instance_flavor: uom.mse.2c9g
+instance_flavor: uom.general.1c4g

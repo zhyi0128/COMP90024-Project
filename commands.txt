@@ -147,8 +147,15 @@ pip list | grep docker
 联合执行指令
 python3 newharvester.py & python3 searchByName.py & python3 process.py
 
-奇怪的shell
-echo -e "\n"
+显示换行，-e是开启转义
+#!/bin/sh
+echo -e "OK! \n" # -e 开启转义
+echo "It is a test"
+
+显示不换行
+#!/bin/sh
+echo -e "OK! \c" # -e 开启转义 \c 不换行
+echo "It is a test"
 
 检查文件大小指令：
 ls  -lht 

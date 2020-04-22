@@ -1,0 +1,13 @@
+---
+- name: Format disk
+  filesystem: 
+    fstype: ext4 
+    dev: /dev/vdb
+    force: true
+
+- name: Mount volume
+  mount:
+    path: /data
+    src: /dev/vdb
+    fstype: ext4
+    state: mounted
