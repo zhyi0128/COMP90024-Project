@@ -1,12 +1,6 @@
 ---
 # https://docs.docker.com/engine/install/ubuntu/ follow this tutorial to install docker to ubuntu
-- name: Uninstall old versions of docker
-  tags: 'docker'
-  become: yes
-  apt:
-    name: ['docker', 'docker-engine', 'docker.io']
-    state: absent
-
+# https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-18-04
 - name: Install dependencies
   tags: 'docker'
   become: yes
@@ -23,14 +17,11 @@
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
-# - name: Add Docker apt repository and update apt cache
-#   tags: 'docker'
-#   become: yes
-#   apt_repository:
-#     repo: "deb https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
-#     mode: '644'
-#     update_cache: yes
-#     state: present
+- name: Add Docker Repository
+  tags: 'docker'
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
 
 - name: Install docker community
   tags: 'docker'
@@ -39,11 +30,15 @@
     name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
     state: latest
     install_recommends: no
-    update_cache: yes
 
 - name: Install docker-compose
   tags: 'docker'
   become: yes
   pip:
-    name: ['docker-compose']
+    name: docker-compose
     state: latest
+
+- name: Install Docker Module for Python
+  tags: 'docker'
+  pip:
+    name: docker

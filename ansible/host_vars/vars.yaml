@@ -40,12 +40,13 @@ security_groups:
     remote_ip_prefix: 0.0.0.0/0
 
 # Instance
-instance_name: 
+instances: 
   - name: test_couchdb
     volumes: Volume-B
 
 # instance_image: 703d4362-dea8-425b-8654-313d50d40e03  # Ubuntu 18.04 LTS (Bionic) amd64 (with Docker)
 instance_image: 45225edb-66d8-4fd0-bf41-132a31a18166   # NeCTAR Ubuntu 18.04 LTS (Bionic) amd64
 instance_key_name: yml
-# instance_flavor: uom.mse.2c9g
-instance_flavor: uom.general.1c4g
+instance_flavor: uom.mse.2c9g
+# instance_flavor: uom.general.1c4g
+instance_network: qh2-uom

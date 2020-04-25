@@ -9,6 +9,7 @@
     availability_zone: '{{ availability_zone }}'
     security_groups: '{{ sg_names }}'
     volumes: '{{ item.volumes }}'
+    network: '{{ instance_network }}'
     auto_floating_ip: yes
     wait: yes
     timeout: 600
@@ -16,10 +17,10 @@
   loop: '{{ instances }}'
   register: os_instance
 
-- debug:
-    msg: "Instance {{ item.openstack.name }} has been created. IP address is {{ item.openstack.public_v4 }}"
-  loop: '{{ os_instance.results }}'
-  when: item.openstack is defined
+# - debug:
+#     msg: "Instance {{ item.openstack.name }} has been created. IP address is {{ item.openstack.public_v4 }}"
+#   loop: '{{ os_instance.results }}'
+#   when: item.openstack is defined
 
 - name: Wait for connection
   wait_for:
@@ -37,3 +38,14 @@
     groups: COMP90024
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
+
+# get a list of instance Ids from the return value of os_instance
+- name: Create a list of instance Ids
+  set_fact:
+    os_instance_ids: '{{ os_instance_ids|default([]) + [ item.id ] }}'
+  loop: '{{ os_instance.results }}'
+
+- debug:
+    msg: "Instance {{ os_instance_ids }} has been created."
+  when: os_instance.name is defined
+

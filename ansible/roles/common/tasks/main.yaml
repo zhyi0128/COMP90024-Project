@@ -1,5 +1,4 @@
 ---
-
 # what is this? https://docs.ansible.com/ansible/latest/modules/setup_module.html
 - name: Gather facts of remote host
   setup:
@@ -9,7 +8,7 @@
   tags: always
   become: yes
   apt:
-    name: ['pip', 'curl', 'git', 'python3-pip', 'python3-setuptools', 'unzip', 'vim', 'net-tools']
+    name: ['pip', 'git', 'python3-pip', 'python3-setuptools', 'unzip', 'vim', 'net-tools']
     state: latest
     install_recommends: no
     update_cache: yes
@@ -25,16 +24,4 @@
   become: yes
   pip:
     name: ['openstacksdk']
-    state: latest
-
-- name: Install docker.io
-  apt: 
-    name: docker.io
-    force_apt_get: yes
-    state: latest
-    update_cache: yes
-
-- name: Install docker-compose
-  pip: 
-    name: docker-compose
     state: latest
