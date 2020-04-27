@@ -2,6 +2,7 @@
   gather_facts: false
 
   roles:
-    - role: common
-    - role: docker
+    # - role: proxy
+    # - role: common
+    # - role: docker
     - role: mount-volume

@@ -1,18 +1,16 @@
 ---
-# what is this? https://docs.ansible.com/ansible/latest/modules/setup_module.html
-- name: Gather facts of remote host
-  setup:
-    gather_subset: all
+# - name: Gather facts of remote host
+#   setup:
+#     gather_subset: all
 
 - name: Install dependencies
   tags: always
   become: yes
   apt:
-    name: ['pip', 'git', 'python3-pip', 'python3-setuptools', 'unzip', 'vim', 'net-tools']
+    name: ['python-pip', 'git', 'python3-pip', 'python3-setuptools', 'unzip', 'net-tools']
     state: latest
     install_recommends: no
     update_cache: yes
-  when: ansible_distribution == "Ubuntu"
 
 - name: Update pip
   become: yes

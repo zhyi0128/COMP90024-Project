@@ -6,6 +6,4 @@
   roles:
     - role: volume
     - role: security-group
-    - role: volume-snapshop
-    - role: image
     - role: instance

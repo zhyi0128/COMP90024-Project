@@ -24,9 +24,12 @@ $ echo "deb https://apache.bintray.com/couchdb-deb bionic main" \
 $ curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc \
     | sudo apt-key add -
 
-$ sudo apt-get update && sudo apt-get install couchdb
+$ sudo apt update && sudo apt install couchdb=2.3.0~bionic
 
 $ sudo service couchdb restart
+
+删除couchdb
+sudo apt remove --purge couchdb
 
 sudo /etc/init.d/couchdb stop
 sudo /etc/init.d/couchdb start
@@ -46,19 +49,34 @@ view_index_dir = /data
 whereis指令
 find ./ -name "*.json"
 
+
+
 添加node
-curl -X POST -H "Content-Type: application/json" http://admin:password@127.0.0.1:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"password", "node_count":"3"}'
+每个instance都跑来启动cluster
+curl -X POST -H "Content-Type: application/json" http://admin:project@127.0.0.1:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"project", "node_count":"3"}'
 
-curl -X POST -H "Content-Type: application/json" http://admin:project@127.0.0.1:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"project", "port": 5984, "remote_node": "45.113.234.207", "remote_current_user": "admin", "remote_current_password": "project" }'
+选一个主节点，添加第一个
+curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"project", "port": 5984, "node_count": "3", "remote_node": "172.26.130.237", "remote_current_user": "admin", "remote_current_password": "project" }'
 
-curl -X POST -H "Content-Type: application/json" http://admin:project@127.0.0.1:5984/_cluster_setup -d '{"action": "add_node", "host":"45.113.234.207", "port": "5984", "username": "admin", "password":"project"}'
+curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "add_node", "host":"172.26.130.237", "port": 5984, "username": "admin", "password":"project"}'
 
-curl -X POST -H "Content-Type: application/json" http://admin:project@127.0.0.1:5984/_cluster_setup -d '{"action": "finish_cluster"}'
+继续刚才主节点，添加第二个
+curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"project", "port": 5984, "node_count": "3", "remote_node": "172.26.130.118", "remote_current_user": "admin", "remote_current_password": "project" }'
+
+curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "add_node", "host":"172.26.130.118", "port": 5984, "username": "admin", "password":"project"}'
+
+主节点收尾
+curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "finish_cluster"}'
+
 
 查看是否正常运行
 curl http://127.0.0.1:5984/
 查看集群
 curl http://admin:project@localhost:5984/_membership
+查询是否开启cluster模式
+curl http://admin:project@127.0.0.1:5984/_cluster_setup
+curl http://admin:project@45.113.234.5:5984/_cluster_setup
+
 
 查看当前运行的线程
 ps -ef |grep python
@@ -168,6 +186,9 @@ https://www.runoob.com/linux/linux-vim.html
 
 进入虚拟环境
 source venv/bin/activate
+
+移除host
+ssh-keygen -R xx.xx.xx.xx
 
 导出软件包
 pip freeze > requirements.txt

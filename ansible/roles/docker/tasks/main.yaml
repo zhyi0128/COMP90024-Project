@@ -1,8 +1,6 @@
 ---
 # https://docs.docker.com/engine/install/ubuntu/ follow this tutorial to install docker to ubuntu
-# https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-18-04
 - name: Install dependencies
-  tags: 'docker'
   become: yes
   apt:
     name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg-agent','python-setuptools', 'software-properties-common']
@@ -11,25 +9,44 @@
     update_cache: yes
 
 - name: Add Docker apt repository key
-  tags: 'docker'
   become: yes
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
 - name: Add Docker Repository
-  tags: 'docker'
+  become: yes
   apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu bionic stable
     state: present
 
-- name: Install docker community
-  tags: 'docker'
+- name: Install docker ce
   become: yes
   apt:
     name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
     state: latest
     install_recommends: no
+    
+- name: Create config folder
+  become: yes
+  file: 
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+
+- name: Create config file
+  become: yes
+  file: 
+    path: /etc/systemd/system/docker.service.d/http-proxy.conf
+    state: touch
+
+- name: Configure proxy parameters
+  become: yes
+  blockinfile:
+    path: /etc/systemd/system/docker.service.d/http-proxy.conf
+    block: |
+      [Service]
+      Environment="HTTP_PROXY=http://wwwproxy.unimelb.edu.au:8000/"
+      Environment="HTTPS_PROXY=https://http://wwwproxy.unimelb.edu.au:8000/"
 
 - name: Install docker-compose
   tags: 'docker'
@@ -38,7 +55,7 @@
     name: docker-compose
     state: latest
 
-- name: Install Docker Module for Python
-  tags: 'docker'
-  pip:
-    name: docker
+- name: Restart docker
+  shell: |
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker

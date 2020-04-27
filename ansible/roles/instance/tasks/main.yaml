@@ -7,7 +7,7 @@
     key_name: '{{ instance_key_name }}'
     flavor: '{{ instance_flavor }}'
     availability_zone: '{{ availability_zone }}'
-    security_groups: '{{ sg_names }}'
+    security_groups: '{{ os_sg_ids }}'
     volumes: '{{ item.volumes }}'
     network: '{{ instance_network }}'
     auto_floating_ip: yes
@@ -31,13 +31,13 @@
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
-# Add hosts to Ansible in-memory inventory
-- name: Add host
-  add_host:
-    name: '{{ item.openstack.public_v4 }}'
-    groups: COMP90024
-  loop: '{{ os_instance.results }}'
-  when: item.openstack is defined
+# # Add hosts to Ansible in-memory inventory
+# - name: Add host
+#   add_host:
+#     name: '{{ item.openstack.public_v4 }}'
+#     groups: COMP90024
+#   loop: '{{ os_instance.results }}'
+#   when: item.openstack is defined
 
 # get a list of instance Ids from the return value of os_instance
 - name: Create a list of instance Ids
@@ -48,4 +48,3 @@
 - debug:
     msg: "Instance {{ os_instance_ids }} has been created."
   when: os_instance.name is defined
-
