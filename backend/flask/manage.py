@@ -1,9 +1,9 @@
 from App import create_app
 import os
+from flask_cors import CORS
 
-env = os.environ.get("FLASK_ENV") or "development"
-
-app = create_app(env)
+app = create_app()
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 if __name__ == '__main__':
     app.run()
