@@ -17,10 +17,10 @@
   loop: '{{ instances }}'
   register: os_instance
 
-# - debug:
-#     msg: "Instance {{ item.openstack.name }} has been created. IP address is {{ item.openstack.public_v4 }}"
-#   loop: '{{ os_instance.results }}'
-#   when: item.openstack is defined
+- debug:
+    msg: "Instance {{ item.openstack.name }} has been created. IP address is {{ item.openstack.public_v4 }}"
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
 
 - name: Wait for connection
   wait_for:
@@ -31,13 +31,13 @@
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
-# # Add hosts to Ansible in-memory inventory
-# - name: Add host
-#   add_host:
-#     name: '{{ item.openstack.public_v4 }}'
-#     groups: COMP90024
-#   loop: '{{ os_instance.results }}'
-#   when: item.openstack is defined
+# Add hosts to Ansible in-memory inventory
+- name: Add host
+  add_host:
+    name: '{{ item.openstack.public_v4 }}'
+    groups: Group38
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
 
 # get a list of instance Ids from the return value of os_instance
 - name: Create a list of instance Ids
@@ -45,6 +45,19 @@
     os_instance_ids: '{{ os_instance_ids|default([]) + [ item.id ] }}'
   loop: '{{ os_instance.results }}'
 
-- debug:
-    msg: "Instance {{ os_instance_ids }} has been created."
-  when: os_instance.name is defined
+# - debug:
+#     msg: "Instance {{ os_instance_ids }} has been created."
+#   when: os_instance.name is defined
+
+- name: Modify inventory/hosts
+  blockinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/inventory/hosts
+    block: |
+      [root]
+      {{ os_instance.results.0.openstack.public_v4 }}
+      [sub1]
+      {{ os_instance.results.1.openstack.public_v4 }}
+      [sub2]
+      {{ os_instance.results.2.openstack.public_v4 }}
+      [web]
+      {{ os_instance.results.3.openstack.public_v4 }}

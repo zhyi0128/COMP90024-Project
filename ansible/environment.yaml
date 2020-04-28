@@ -1,8 +1,28 @@
-- hosts: all
+# - hosts: all
+#   gather_facts: false
+
+#   roles:
+#     # - role: proxy
+#     # - role: common
+#     # - role: docker
+#     # - role: mount-volume
+#     # - role: try
+
+- hosts: sub1
   gather_facts: false
 
   roles:
-    # - role: proxy
-    # - role: common
-    # - role: docker
-    - role: mount-volume
+    - role: couchdb-sub1
+
+- hosts: sub2
+  gather_facts: false
+
+  roles:
+    - role: couchdb-sub2
+
+- hosts: root
+  gather_facts: false
+
+  roles:
+    - role: couchdb-root
+    - role: couchdb-cluster

@@ -6,6 +6,10 @@
     state: directory
     mode: 0777
 
+- name: chmod 777 /data
+  become: yes
+  command: chmod 777 /data
+
 - name: Format disk
   become: yes
   filesystem: 

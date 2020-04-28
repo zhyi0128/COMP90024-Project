@@ -1,5 +1,6 @@
 ---
 # https://docs.docker.com/engine/install/ubuntu/ follow this tutorial to install docker to ubuntu
+# https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-18-04
 - name: Install dependencies
   become: yes
   apt:
@@ -46,7 +47,8 @@
     block: |
       [Service]
       Environment="HTTP_PROXY=http://wwwproxy.unimelb.edu.au:8000/"
-      Environment="HTTPS_PROXY=https://http://wwwproxy.unimelb.edu.au:8000/"
+      Environment="HTTPS_PROXY=http://wwwproxy.unimelb.edu.au:8000/"
+      Environment="no_proxy=localhost,127.0.0.1,172.17.0.0/12,128.250.0.0/12,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org.au,.storage.unimelb.edu.au,.cloud.unimelb.edu.au"
 
 - name: Install docker-compose
   tags: 'docker'

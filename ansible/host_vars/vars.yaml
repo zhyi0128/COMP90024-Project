@@ -68,6 +68,12 @@ security_groups:
     port_range_min: 5000
     port_range_max: 5000
     remote_ip_prefix: 0.0.0.0/0
+  - name: icmp
+    description: Open icmp for ping
+    protocol: icmp
+    port_range_min: -1
+    port_range_max: -1
+    remote_ip_prefix: 0.0.0.0/0
     
 
 # Instance
