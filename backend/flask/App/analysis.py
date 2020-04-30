@@ -1,6 +1,24 @@
 from flask_restful import Resource
 from flask import jsonify
 
+import couchdb
+
+couchserver = couchdb.Server('http://admin:project@172.26.132.133:5984')
+
+apr_28_db_name = "apr_28_melbourne"
+apr_28_db = couchserver[apr_28_db_name]
+# print(apr_28_db["1252751225889546241"]["doc"])
+
+return_json = {
+
+    "name": "Melbourne",
+    "value": {
+        "positive":10,
+        "negative":10, 
+        "neutral":20,
+    }
+    
+}
 
 class DataAPI1(Resource):
     def get(self):
@@ -97,9 +115,10 @@ class GetPrices(Resource):
         return jsonify(prices)
 
 
-class DataAPI2(Resource):
+class MelSentiment(Resource):
     def post(self):
         pass
 
     def get(self):
-        pass
+        return jsonify(return_json)
+

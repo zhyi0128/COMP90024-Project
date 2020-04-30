@@ -17,4 +17,4 @@ def index():
 
 api.add_resource(GetPrices, '/getprices/')
 api.add_resource(DataAPI1, "/dataapi1/")
-api.add_resource(DataAPI2, "/dataapi2")
+api.add_resource(MelSentiment, "/melsentiment")
