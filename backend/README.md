@@ -1,5 +1,13 @@
 # flask_docker
 
+## git pull from master into the development branch
+
+```bash
+git checkout dmgr2      # gets you "on branch dmgr2"
+git fetch origin        # gets you up to date with origin
+git merge origin/master
+```
+
 ## How to use
 
 `sudo docker-compose build`
