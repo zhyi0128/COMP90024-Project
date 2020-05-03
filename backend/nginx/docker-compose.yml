@@ -20,7 +20,7 @@ services:
   #     - 8081
 
   nginx:
-    build: ./nginx
+    build: .
     container_name: nginx
     restart: always
     ports:
