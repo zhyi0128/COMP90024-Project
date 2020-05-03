@@ -1,0 +1,10 @@
+---
+- name: run python with adelaide
+  shell: nohup python3 tweepy_search_adelaide_may_3rd.py > /dev/null 2>&1 &
+  args:
+    chdir: /home/ubuntu/crawler/
+
+- name: run python with brisbane
+  shell: nohup python3 tweepy_search_brisbane_may_3rd.py > /dev/null 2>&1 &
+  args:
+    chdir: /home/ubuntu/crawler/

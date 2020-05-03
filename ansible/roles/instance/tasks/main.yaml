@@ -61,3 +61,7 @@
       {{ os_instance.results.2.openstack.public_v4 }}
       [web]
       {{ os_instance.results.3.openstack.public_v4 }}
+      [flask]
+      {{ os_instance.results.0.openstack.public_v4 }}
+      {{ os_instance.results.1.openstack.public_v4 }}
+      {{ os_instance.results.2.openstack.public_v4 }}

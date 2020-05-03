@@ -11,5 +11,9 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 [sub2]
 172.26.132.2
 [web]
-172.26.132.93
+172.26.130.14
+[flask]
+172.26.132.133
+172.26.132.58
+172.26.132.2
 # END ANSIBLE MANAGED BLOCK

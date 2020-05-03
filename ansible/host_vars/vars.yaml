@@ -10,7 +10,7 @@ volumes:
   - vol_name: volumeC
     vol_size: 70
   - vol_name: volumeD
-    vol_size: 30
+    vol_size: 40
 
 # Security group
 security_groups:
@@ -78,12 +78,12 @@ security_groups:
 
 # Instance
 instances: 
-  - name: db-root
-    volumes: volumeA
-  - name: db-sub1
-    volumes: volumeB
-  - name: db-sub2
-    volumes: volumeC
+  # - name: db-root
+  #   volumes: volumeA
+  # - name: db-sub1
+  #   volumes: volumeB
+  # - name: db-sub2
+  #   volumes: volumeC
   - name: web-server
     volumes: volumeD
 

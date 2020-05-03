@@ -1,0 +1,28 @@
+- name: Check nginx folder
+  stat:
+    path: /home/ubuntu/nginxhttp
+  register: nginx_dir
+
+- name: create app folder
+  file:
+    path: /home/ubuntu/nginxhttp
+    state: directory
+    mode: 0777
+  when: nginx_dir.stat.exists == false
+
+- name: Copy nginx from local to remote
+  copy:
+    src: /Users/xuzheng/Projects/COMP90024-Project/backend/nginxhttp/
+    dest: /home/ubuntu/nginxhttp
+
+# - name: stop docker-compose
+#   become: yes
+#   command: docker-compose down -f /home/ubuntu/app/docker-compose.yml --rmi all
+
+- name: stop docker-compose
+  become: yes
+  raw: cd /home/ubuntu/nginxhttp; docker-compose down --rmi all
+
+- name: start docker-compose
+  become: yes
+  raw: cd /home/ubuntu/nginxhttp; docker-compose up --build --force-recreate -d
