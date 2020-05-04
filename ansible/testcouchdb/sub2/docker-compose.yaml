@@ -13,7 +13,7 @@ services:
       - /data:/data
     environment:
       - COUCHDB_USER=admin
-      - COUCHDB_PASSWORD=project
+      - COUCHDB_PASSWORD=happy
       - NODENAME=172.26.132.2
       - COUCHDB_COOKIE=monster
     container_name: couch_sub2

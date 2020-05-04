@@ -1,45 +1,45 @@
-- hosts: all
+# - hosts: all
+#   gather_facts: false
+
+#   roles:
+#     - role: proxy
+#     - role: common
+#     - role: docker
+#     - role: mount-volume
+#     - role: crawler-setup
+
+- hosts: sub1
   gather_facts: false
 
   roles:
-    # - role: proxy
-    # - role: common
-    # - role: docker
-    # - role: mount-volume
-    - role: crawler-setup
+    - role: couchdb-sub1
 
-# - hosts: sub1
-#   gather_facts: false
+- hosts: sub2
+  gather_facts: false
 
-#   roles:
-#     - role: couchdb-sub1
+  roles:
+    - role: couchdb-sub2
 
-# - hosts: sub2
-#   gather_facts: false
+- hosts: root
+  gather_facts: false
 
-#   roles:
-#     - role: couchdb-sub2
-
-# - hosts: root
-#   gather_facts: false
-
-#   roles:
-#     - role: couchdb-root
-#     - role: couchdb-cluster
+  roles:
+    - role: couchdb-root
+    - role: couchdb-cluster
 
 
-
+#---------------------------------crawler----------------------------------
 # - hosts: root
 #   gather_facts: false
 
 #   roles:
 #     - role: crawler-root
 
-- hosts: sub1
-  gather_facts: false
+# - hosts: sub1
+#   gather_facts: false
 
-  roles:
-    - role: crawler-sub1
+#   roles:
+#     - role: crawler-sub1
 
 # - hosts: sub2
 #   gather_facts: false

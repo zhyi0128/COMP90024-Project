@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # key_index = config.search_appid['Darwin']
     api = get_api(key_index = key_index)
 
-    server = couchdb.Server("http://%s:%s@172.26.132.58:5984/" % ('admin', 'project'))
+    server = couchdb.Server("http://%s:%s@172.26.132.58:5984/" % ('admin', 'happy'))
     db_name = 'may_3rd_hobart'
 
     try:

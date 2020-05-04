@@ -53,29 +53,29 @@ find ./ -name "*.json"
 
 添加node
 每个instance都跑来启动cluster
-curl -X POST -H "Content-Type: application/json" http://admin:project@127.0.0.1:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"project", "node_count":"3"}'
+curl -X POST -H "Content-Type: application/json" http://admin:happy@127.0.0.1:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"happy", "node_count":"3"}'
 
 选一个主节点，添加第一个
-curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"project", "port": 5984, "node_count": "3", "remote_node": "172.26.130.237", "remote_current_user": "admin", "remote_current_password": "project" }'
+curl -X POST -H "Content-Type: application/json" http://admin:happy@172.26.130.187:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"happy", "port": 5984, "node_count": "3", "remote_node": "172.26.130.237", "remote_current_user": "admin", "remote_current_password": "happy" }'
 
-curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "add_node", "host":"172.26.130.237", "port": 5984, "username": "admin", "password":"project"}'
+curl -X POST -H "Content-Type: application/json" http://admin:happy@172.26.130.187:5984/_cluster_setup -d '{"action": "add_node", "host":"172.26.130.237", "port": 5984, "username": "admin", "password":"happy"}'
 
 继续刚才主节点，添加第二个
-curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"project", "port": 5984, "node_count": "3", "remote_node": "172.26.130.118", "remote_current_user": "admin", "remote_current_password": "project" }'
+curl -X POST -H "Content-Type: application/json" http://admin:happy@172.26.130.187:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"happy", "port": 5984, "node_count": "3", "remote_node": "172.26.130.118", "remote_current_user": "admin", "remote_current_password": "happy" }'
 
-curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "add_node", "host":"172.26.130.118", "port": 5984, "username": "admin", "password":"project"}'
+curl -X POST -H "Content-Type: application/json" http://admin:happy@172.26.130.187:5984/_cluster_setup -d '{"action": "add_node", "host":"172.26.130.118", "port": 5984, "username": "admin", "password":"happy"}'
 
 主节点收尾
-curl -X POST -H "Content-Type: application/json" http://admin:project@172.26.130.187:5984/_cluster_setup -d '{"action": "finish_cluster"}'
+curl -X POST -H "Content-Type: application/json" http://admin:happy@172.26.130.187:5984/_cluster_setup -d '{"action": "finish_cluster"}'
 
 
 查看是否正常运行
 curl http://127.0.0.1:5984/
 查看集群
-curl http://admin:project@localhost:5984/_membership
+curl http://admin:happy@localhost:5984/_membership
 查询是否开启cluster模式
-curl http://admin:project@127.0.0.1:5984/_cluster_setup
-curl http://admin:project@45.113.234.5:5984/_cluster_setup
+curl http://admin:happy@127.0.0.1:5984/_cluster_setup
+curl http://admin:happy@45.113.234.5:5984/_cluster_setup
 
 
 查看当前运行的线程
