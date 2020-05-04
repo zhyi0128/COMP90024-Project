@@ -1,0 +1,10 @@
+---
+- name: run python with hobart
+  shell: nohup python3 tweepy_search_hobart_may_3rd.py > /dev/null 2>&1 &
+  args:
+    chdir: /home/ubuntu/crawler/
+
+- name: run python with melbourne
+  shell: nohup python3 tweepy_search_melbourne_may_3rd.py > /dev/null 2>&1 &
+  args:
+    chdir: /home/ubuntu/crawler/

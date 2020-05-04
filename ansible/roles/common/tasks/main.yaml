@@ -1,0 +1,25 @@
+---
+# - name: Gather facts of remote host
+#   setup:
+#     gather_subset: all
+
+- name: Install dependencies
+  tags: always
+  become: yes
+  apt:
+    name: ['python-pip', 'git', 'python3-pip', 'python3-setuptools', 'unzip', 'net-tools']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+- name: Update pip
+  become: yes
+  pip:
+    name: ['pip']
+    state: latest
+
+- name: Install openstacksdk
+  become: yes
+  pip:
+    name: ['openstacksdk']
+    state: latest

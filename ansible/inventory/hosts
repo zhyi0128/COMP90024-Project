@@ -1,0 +1,19 @@
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_user=ubuntu
+ansible_ssh_private_key_file=~/.ssh/yml.pem
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+# BEGIN ANSIBLE MANAGED BLOCK
+[root]
+172.26.132.133
+[sub1]
+172.26.132.58
+[sub2]
+172.26.132.2
+[web]
+172.26.130.14
+[flask]
+172.26.132.133
+172.26.132.58
+172.26.132.2
+# END ANSIBLE MANAGED BLOCK

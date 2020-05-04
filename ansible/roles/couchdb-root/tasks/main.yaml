@@ -1,0 +1,23 @@
+---
+- name: Create a folder to put docker-compose
+  file:
+    path: /home/ubuntu/couchdb-docker-set-up
+    state: directory
+    mode: 0777
+
+# - name: git code
+#   git:
+#     repo: ''
+#     dest: /couchdb-docker-set-up
+#     clone: yes
+
+# some information about copy command in ansible  https://www.mydailytutorials.com/how-to-copy-files-and-directories-in-ansible-using-copy-and-fetch-modules/
+
+- name: Copy root from local to remote
+  copy:
+    src: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/testcouchdb/root 
+    dest: /home/ubuntu/couchdb-docker-set-up
+
+- name: run couchdb-root
+  become: yes
+  raw: cd /home/ubuntu/couchdb-docker-set-up/root/; docker-compose up --build --force-recreate -d 

@@ -1,0 +1,64 @@
+---
+# https://docs.docker.com/engine/install/ubuntu/ follow this tutorial to install docker to ubuntu
+# https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-18-04
+
+- name: Install dependencies
+  become: yes
+  apt:
+    name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg-agent','python-setuptools', 'software-properties-common']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+- name: Add Docker apt repository key
+  become: yes
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  become: yes
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: Install docker ce
+  become: yes
+  apt:
+    name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
+    state: latest
+    install_recommends: no
+    
+- name: Create config folder
+  become: yes
+  file: 
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+
+- name: Create config file
+  become: yes
+  file: 
+    path: /etc/systemd/system/docker.service.d/http-proxy.conf
+    state: touch
+
+- name: Configure proxy parameters
+  become: yes
+  blockinfile:
+    path: /etc/systemd/system/docker.service.d/http-proxy.conf
+    block: |
+      [Service]
+      Environment="HTTP_PROXY=http://wwwproxy.unimelb.edu.au:8000/"
+      Environment="HTTPS_PROXY=http://wwwproxy.unimelb.edu.au:8000/"
+      Environment="no_proxy=localhost,127.0.0.1,172.17.0.0/12,128.250.0.0/12,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org.au,.storage.unimelb.edu.au,.cloud.unimelb.edu.au"
+
+- name: Install docker-compose
+  tags: 'docker'
+  become: yes
+  pip:
+    name: docker-compose
+    state: latest
+
+- name: Restart docker
+  shell: |
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker

@@ -1,0 +1,28 @@
+---
+# Create security groups
+- name: Create a security group
+  os_security_group:
+    name: '{{ item.name }}'
+    description: '{{ item.description }}'
+    state: present
+  loop: '{{ security_groups }}'
+  register: os_sg
+
+- name: Create a list of security group IDs
+  set_fact:
+    os_sg_ids: '{{ os_sg_ids|default([]) + [ item.id ] }}'
+  loop: '{{ os_sg.results }}'
+
+- debug:
+    msg: "Security group {{ os_sg_ids }} has been created."
+
+# Create security group rules
+- name: Create security group rules
+  os_security_group_rule:
+    security_group: '{{ item.name }}'
+    protocol: '{{ item.protocol }}'
+    port_range_min: '{{ item.port_range_min }}'
+    port_range_max: '{{ item.port_range_max }}'
+    remote_ip_prefix: '{{ item.remote_ip_prefix }}'
+    state: present
+  loop: '{{ security_groups }}'

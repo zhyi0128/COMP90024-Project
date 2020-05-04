@@ -1,0 +1,9 @@
+- hosts: localhost
+  vars_files:
+    - host_vars/vars.yaml
+  gather_facts: true
+
+  roles:
+    - role: volume
+    - role: security-group
+    - role: instance

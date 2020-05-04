@@ -1,0 +1,12 @@
+---
+- name: Copy root from local to remote
+  copy:
+    src: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/curl-cluster.sh
+    dest: /home/ubuntu/couchdb-docker-set-up
+
+- name: chmod 777
+  become: yes
+  command: chmod 777 /home/ubuntu/couchdb-docker-set-up/curl-cluster.sh
+
+- name: Add node cluster and finish
+  shell: /home/ubuntu/couchdb-docker-set-up/curl-cluster.sh

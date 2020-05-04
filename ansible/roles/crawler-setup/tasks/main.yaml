@@ -1,0 +1,34 @@
+---
+- name: Create /crawler
+  become: yes
+  file: 
+    path: /home/ubuntu/crawler
+    state: directory
+    mode: 0777
+
+# - name: chmod 777 
+#   become: yes
+#   command: chmod 777 /home/ubuntu/crawler
+
+# - name: git code
+#   git:
+#     repo: '地址'
+#     dest: /opt/workspace/crawler2
+#     clone: yes
+
+- name: Copy root from local to remote
+  copy:
+    src: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/tweepy_search/
+    dest: /home/ubuntu/crawler
+
+- name: chmod 777 
+  become: yes
+  command: chmod -R 777 /home/ubuntu/crawler
+
+- name: install requirements
+  pip:
+    requirements: /home/ubuntu/crawler/requirements.txt
+
+# - name: chmod 777 all python
+#   become: yes
+#   commmand: chmod 777 /home/ubuntu/crawler/tweepy_search_adelaide_may_3rd.py

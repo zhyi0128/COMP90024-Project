@@ -1,0 +1,33 @@
+---
+- name: Create /data
+  become: yes
+  file: 
+    path: /data
+    state: directory
+    mode: 0777
+
+- name: chmod 777 /data
+  become: yes
+  command: chmod 777 /data
+
+- name: Format disk
+  become: yes
+  filesystem: 
+    fstype: ext4
+    dev: /dev/vdb
+    force: true
+
+- name: Mount volume
+  become: yes
+  mount:
+    path: /data
+    src: /dev/vdb
+    fstype: ext4
+    state: mounted
+
+# - name: mkdir the mount point
+#   become: yes
+#   shell: |
+#     mkfs.ext4 /dev/vdb
+#     sudo mount /dev/vdb /data
+#     sleep 3

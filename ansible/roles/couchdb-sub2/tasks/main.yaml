@@ -1,0 +1,9 @@
+---
+- name: Copy sub2 from local to remote
+  copy:
+    src: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/testcouchdb/sub2
+    dest: /home/ubuntu/couchdb-docker-set-up
+
+- name: run couchdb-sub2
+  become: yes
+  raw: cd /home/ubuntu/couchdb-docker-set-up/sub2/; docker-compose up --build --force-recreate -d 
