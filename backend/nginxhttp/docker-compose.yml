@@ -1,27 +1,9 @@
 version: '3'
 
 services:
-  #   flask:
-  #     build: ./flask
-  #     container_name: flask
-  #     restart: always
-  #     environment:
-  #       - APP_NAME=Backend
-  #     expose:
-  #       - 8080
-
-  # flask2:
-  #   build: ./flask2
-  #   container_name: flask2
-  #   restart: always
-  #   environment:
-  #     - APP_NAME=Backend
-  #   expose:
-  #     - 8081
-
   nginx:
     build: .
-    container_name: nginx
+    container_name: nginx_http
     restart: always
     ports:
       - '80:80'
