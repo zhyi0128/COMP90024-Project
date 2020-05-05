@@ -3,7 +3,7 @@ from flask import jsonify
 
 import couchdb
 
-couchserver = couchdb.Server('http://admin:project@172.26.132.133:5984')
+couchserver = couchdb.Server('http://admin:happy@172.26.132.133:5984')
 
 apr_28_db_name = "apr_28_melbourne"
 apr_28_db = couchserver[apr_28_db_name]

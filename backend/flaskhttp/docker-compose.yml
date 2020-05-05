@@ -5,7 +5,5 @@ services:
     build: .
     container_name: flask
     restart: always
-    environment:
-      - APP_NAME=Backend
     ports:
       - '5000:5000'
