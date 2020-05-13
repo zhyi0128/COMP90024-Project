@@ -53,3 +53,27 @@ class MelSentiment(Resource):
             '_design/melview/_view/gsenti', reduce=True, group=True)
         res = get_general_senti(general_mel_view, general_melsenti_view)
         return jsonify(res)
+
+
+class CNSentiment(Resource):
+
+    def get(self):
+        db = couchserver["scenario_may_3rd_au"]
+        cn_all_view = db.view(
+            '_design/sentiview/_view/cn_view', reduce=True, group=True, group_level=2)
+        cn_allsenti_view = db.view(
+            '_design/sentiview/_view/cn_view', reduce=True, group=True)
+        res = get_topic_senti(cn_all_view, cn_allsenti_view)
+        return jsonify(res)
+
+
+class CovidSentiment(Resource):
+
+    def get(self):
+        db = couchserver["scenario_may_3rd_au"]
+        covid_all_view = db.view(
+            '_design/sentiview/_view/covid_view', reduce=True, group=True, group_level=2)
+        covid_allsenti_view = db.view(
+            '_design/sentiview/_view/covid_view', reduce=True, group=True)
+        res = get_topic_senti(covid_all_view, covid_allsenti_view)
+        return jsonify(res)
