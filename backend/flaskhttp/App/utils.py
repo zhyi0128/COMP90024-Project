@@ -52,15 +52,21 @@ def get_general_senti(allview, sentiview):
     return res
 
 
-def get_topic_senti(allview, sentiview):
+def get_topic_senti(allview, sentiview, alltweetview):
     results = []
     suburbs = set()
     res = {}
     suburb_tweets = {}
+    suburb_all_tweets = {}
     for row in allview:
         suburb_name = row.key[0]
         suburb_total = row.value
         suburb_tweets[suburb_name] = suburb_total
+
+    for row in alltweetview:
+        suburb_name = row.key[0]
+        suburb_total = row.value
+        suburb_all_tweets[suburb_name] = suburb_total
 
     for row in sentiview:
         suburb_name = row.key[0]
@@ -86,7 +92,7 @@ def get_topic_senti(allview, sentiview):
                         "positive": positive
                     },
                     "related_tweets": suburb_tweets[suburb_name],
-                    "total_tweets": suburb_tweets[suburb_name]
+                    "total_tweets": suburb_all_tweets[suburb_name]
                 }
             }
             suburbs.add(suburb_name)

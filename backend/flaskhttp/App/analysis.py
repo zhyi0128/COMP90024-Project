@@ -59,11 +59,13 @@ class CNSentiment(Resource):
 
     def get(self):
         db = couchserver["scenario_may_3rd_au"]
+        general_all_view = db.view(
+            '_design/sentiview/_view/general', reduce=True, group=True, group_level=1)
         cn_all_view = db.view(
             '_design/sentiview/_view/cn_view', reduce=True, group=True, group_level=2)
         cn_allsenti_view = db.view(
             '_design/sentiview/_view/cn_view', reduce=True, group=True)
-        res = get_topic_senti(cn_all_view, cn_allsenti_view)
+        res = get_topic_senti(cn_all_view, cn_allsenti_view, general_all_view)
         return jsonify(res)
 
 
@@ -71,9 +73,12 @@ class CovidSentiment(Resource):
 
     def get(self):
         db = couchserver["scenario_may_3rd_au"]
+        general_all_view = db.view(
+            '_design/sentiview/_view/general', reduce=True, group=True, group_level=1)
         covid_all_view = db.view(
             '_design/sentiview/_view/covid_view', reduce=True, group=True, group_level=2)
         covid_allsenti_view = db.view(
             '_design/sentiview/_view/covid_view', reduce=True, group=True)
-        res = get_topic_senti(covid_all_view, covid_allsenti_view)
+        res = get_topic_senti(
+            covid_all_view, covid_allsenti_view, general_all_view)
         return jsonify(res)
