@@ -1,6 +1,6 @@
-# ccc
+# CCC Team 38
 
-> A Vue.js project
+> Auther: Zhe Wang
 
 ## Build Setup
 
@@ -8,7 +8,7 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at 10.0.0.16:4200
 npm run dev
 
 # build for production with minification
