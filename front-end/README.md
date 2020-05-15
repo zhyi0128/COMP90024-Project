@@ -1,6 +1,8 @@
-# CCC Team 38
+# CCC Team 38 Frontend
 
-> Auther: Zhe Wang
+> Author: Zhe Wang
+
+> Vue.js + Element-UI + Bootstrap + Echarts
 
 ## Build Setup
 
