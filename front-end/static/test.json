@@ -1,0 +1,22 @@
+[
+  {
+    "location": "Greater Melbourne",
+
+    "Total Mean": "",
+    "Total Median": "",
+
+    "incomeProportion":{
+      "Below 0": "",
+      "0 AUD": "",
+      "1-500 (AUD)": "",
+        ...
+
+    },
+
+    "sourceProportion": {
+      "xxx": "",
+      "": ""
+    }
+
+  }
+]
