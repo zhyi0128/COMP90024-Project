@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_restful import Api, Resource
-from App.analysis import *
+from App.apis import *
 
 api_blueprint = Blueprint('service', __name__, url_prefix='/api')
 api = Api(api_blueprint)
