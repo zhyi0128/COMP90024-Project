@@ -344,17 +344,17 @@
         const axios = require('axios')
         switch(topic){
           case 'happiness':
-            let res = await axios.get('http://115.146.94.179:5000/api/generalsenti_mel')
+            let res = await axios.get('api/generalsenti_mel')
             processTweetsData(res.data, this.tweetsData.happiness.mel, this.getColorRank)
-            res = await axios.get('http://115.146.94.179:5000/api/generalsenti_all')
+            res = await axios.get('api/generalsenti_all')
             processTweetsData(res.data, this.tweetsData.happiness.states, this.getColorRank)
             break
           case 'cn':
-            res = await axios.get('http://115.146.94.179:5000/api/cn_all')
+            res = await axios.get('api/cn_all')
             processTweetsData(res.data, this.tweetsData.cn.states, this.getColorRank)
             break
           case 'virus':
-            res = await axios.get('http://115.146.94.179:5000/api/covid19_all')
+            res = await axios.get('api/covid19_all')
             processTweetsData(res.data, this.tweetsData.virus.states, this.getColorRank)
             break
         }
