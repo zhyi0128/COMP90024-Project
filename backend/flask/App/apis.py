@@ -86,15 +86,17 @@ class MelSentiment(Resource):
 function (doc) {
   if(doc.is_china===1) {
     if(doc.pos===1) {
-      emit([doc.suburb, "pos", "cn"], 1);
+      emit([doc.suburb, "cn", "pos"], 1);
     } else if(doc.neg===1) {
-      emit([doc.suburb, "neg", "cn"], 1);
+      emit([doc.suburb, "cn", "neg"], 1);
     } else if(doc.neu===1) {
-      emit([doc.suburb, "neu", "cn"], 1);
+      emit([doc.suburb, "cn", "neu"], 1);
     }
   }
 }
 '''
+
+# /cn_all
 
 
 class CNSentiment(Resource):
@@ -103,7 +105,7 @@ class CNSentiment(Resource):
         try:
             couchserver = couchdb.Server(
                 db_address)
-            db = couchserver["scenario_may_3rd_au"]
+            db = couchserver["scenario_city"]
         except:
             message = {
                 "message": "can't connect to couchdb"
@@ -124,11 +126,11 @@ class CNSentiment(Resource):
 function (doc) {
   if(doc.is_covid_19===1) {
     if(doc.pos===1) {
-      emit([doc.suburb, "pos", "cn"], 1);
+      emit([doc.suburb, "covid", "pos"], 1);
     } else if(doc.neg===1) {
-      emit([doc.suburb, "neg", "cn"], 1);
+      emit([doc.suburb, "covid", "neg"], 1);
     } else if(doc.neu===1) {
-      emit([doc.suburb, "neu", "cn"], 1);
+      emit([doc.suburb, "covid", "neu"], 1);
     }
   }
 }
@@ -141,7 +143,7 @@ class CovidSentiment(Resource):
         try:
             couchserver = couchdb.Server(
                 db_address)
-            db = couchserver["scenario_may_3rd_au"]
+            db = couchserver["scenario_city"]
         except:
             message = {
                 "message": "can't connect to couchdb"
