@@ -1,5 +1,13 @@
 ---
-# Create volumes from vars
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883718
+
 - name: Create volume(s) on NeCTAR
   os_volume:
     display_name: '{{ item.vol_name }}'
@@ -11,7 +19,6 @@
   loop: '{{ volumes }}'
   register: os_vol
 
-# Get a list of volume Ids from the return value of os_volume
 - name: Create a list of volume Ids
   set_fact:
     os_vol_ids: '{{ os_vol_ids|default([]) + [ item.id ] }}'

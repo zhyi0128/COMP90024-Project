@@ -1,4 +1,6 @@
 # - hosts: all
+#   vars_files:
+#     - host_vars/vars.yaml
 #   gather_facts: false
 
 #   roles:
@@ -6,51 +8,76 @@
 #     - role: common
 #     - role: docker
 #     - role: mount-volume
-#     - role: crawler-setup
 
-- hosts: sub1
-  gather_facts: false
-
-  roles:
-    - role: couchdb-sub1
-
-- hosts: sub2
-  gather_facts: false
-
-  roles:
-    - role: couchdb-sub2
-
-- hosts: root
-  gather_facts: false
-
-  roles:
-    - role: couchdb-root
-    - role: couchdb-cluster
-
-
-#---------------------------------crawler----------------------------------
-# - hosts: root
-#   gather_facts: false
-
-#   roles:
-#     - role: crawler-root
+# #---------------------------------couchdb----------------------------------
 
 # - hosts: sub1
 #   gather_facts: false
 
 #   roles:
-#     - role: crawler-sub1
+#     - role: couchdb-sub1
 
 # - hosts: sub2
 #   gather_facts: false
 
 #   roles:
-#     - role: crawler-sub2
+#     - role: couchdb-sub2
 
-# - hosts: web
+# - hosts: root
 #   gather_facts: false
 
 #   roles:
-#     - role: crawler-web
+#     - role: couchdb-root
+#     - role: couchdb-cluster
+
+#---------------------------------crawler----------------------------------
+
+- hosts: root
+  gather_facts: false
+
+  roles:
+    - role: crawler-setup
+    - role: crawler-root
+
+- hosts: sub1
+  gather_facts: false
+
+  roles:
+    - role: crawler-setup
+    - role: crawler-sub1
+
+- hosts: sub2
+  gather_facts: false
+
+  roles:
+    - role: crawler-setup
+    - role: crawler-sub2
+
+- hosts: web
+  gather_facts: false
+
+  roles:
+    - role: crawler-setup
+    - role: crawler-web
+
+#---------------------------------web----------------------------------
+# - hosts: web
+#   vars_files:
+#     - host_vars/vars.yaml
+#   gather_facts: true
+#   roles:
+#     - role: init-swarm
+#     - role: deploy-nginx
 
 
+# - hosts: flask
+#   vars_files:
+#     - host_vars/vars.yaml
+#   gather_facts: true
+#   roles:
+#     - role: join-swarm
+
+# - hosts: web
+#   gather_facts: true
+#   roles:
+#     - role: deploy-flask

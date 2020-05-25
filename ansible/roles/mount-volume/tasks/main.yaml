@@ -1,4 +1,13 @@
 ---
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883718
+
 - name: Create /data
   become: yes
   file: 
@@ -6,9 +15,9 @@
     state: directory
     mode: 0777
 
-- name: chmod 777 /data
+- name: chmod 777 -R /data
   become: yes
-  command: chmod 777 /data
+  command: chmod 777 -R /data
 
 - name: Format disk
   become: yes
@@ -25,9 +34,13 @@
     fstype: ext4
     state: mounted
 
+- name: chmod 777 -R /data
+  become: yes
+  command: chmod 777 -R /data
+
 # - name: mkdir the mount point
 #   become: yes
 #   shell: |
-#     mkfs.ext4 /dev/vdb
+#     sudo mkfs -t ext4 /dev/vdb
 #     sudo mount /dev/vdb /data
 #     sleep 3

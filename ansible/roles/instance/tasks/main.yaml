@@ -1,5 +1,13 @@
 ---
-# Create an instance on NeCTAR
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883718
+
 - name: Create an instance
   os_server:
     name: '{{ item.name }}'
@@ -31,7 +39,6 @@
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
-# Add hosts to Ansible in-memory inventory
 - name: Add host
   add_host:
     name: '{{ item.openstack.public_v4 }}'
@@ -39,7 +46,6 @@
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
-# get a list of instance Ids from the return value of os_instance
 - name: Create a list of instance Ids
   set_fact:
     os_instance_ids: '{{ os_instance_ids|default([]) + [ item.id ] }}'
@@ -65,3 +71,291 @@
       {{ os_instance.results.0.openstack.public_v4 }}
       {{ os_instance.results.1.openstack.public_v4 }}
       {{ os_instance.results.2.openstack.public_v4 }}
+
+
+- name: Modify host_vars/vars.yaml
+  blockinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/host_vars/vars.yaml
+    block: |
+      root_ip: {{ os_instance.results.0.openstack.public_v4 }}
+      sub1_ip: {{ os_instance.results.1.openstack.public_v4 }}
+      sub2_ip: {{ os_instance.results.2.openstack.public_v4 }}
+      web_ip: {{ os_instance.results.3.openstack.public_v4 }}
+
+      flask:
+        - root: {{ os_instance.results.0.openstack.public_v4 }}
+        - sub1: {{ os_instance.results.1.openstack.public_v4 }}
+        - sub2: {{ os_instance.results.2.openstack.public_v4 }}
+
+
+- name: Modify testcouchdb/root/docker-compose.yaml
+  blockinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/testcouchdb/root/docker-compose.yaml
+    block: |
+      version: '3'
+      services:
+        couch_root:
+          build: .
+          restart: always
+          network_mode: host
+          ports:
+            - '5984:5984'
+            - '5986:5986'
+            - '4369:4369'
+            - '9100-9200:9100-9200'
+          volumes:
+            - /data:/data
+          environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=happy
+            - NODENAME={{ os_instance.results.0.openstack.public_v4 }}
+            - COUCHDB_COOKIE=monster
+          container_name: couch_root
+
+
+- name: Modify testcouchdb/sub1/docker-compose.yaml
+  blockinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/testcouchdb/sub1/docker-compose.yaml
+    block: |
+      version: '3'
+      services:
+        couch_sub1:
+          build: .
+          restart: always
+          network_mode: host
+          ports:
+            - '5984:5984'
+            - '5986:5986'
+            - '4369:4369'
+            - '9100-9200:9100-9200'
+          volumes:
+            - /data:/data
+          environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=happy
+            - NODENAME={{ os_instance.results.1.openstack.public_v4 }}
+            - COUCHDB_COOKIE=monster
+          container_name: couch_sub1
+
+
+- name: Modify testcouchdb/sub2/docker-compose.yaml
+  blockinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/testcouchdb/sub2/docker-compose.yaml
+    block: |
+      version: '3'
+      services:
+        couch_sub2:
+          build: .
+          restart: always
+          network_mode: host
+          ports:
+            - '5984:5984'
+            - '5986:5986'
+            - '4369:4369'
+            - '9100-9200:9100-9200'
+          volumes:
+            - /data:/data
+          environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=happy
+            - NODENAME={{ os_instance.results.2.openstack.public_v4 }}
+            - COUCHDB_COOKIE=monster
+          container_name: couch_sub2
+
+
+- name: Modify curl-cluster.sh
+  blockinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/curl-cluster.sh
+    block: |
+      curl -X POST -H "Content-Type:application/json" http://admin:happy@{{ os_instance.results.0.openstack.public_v4 }}:5984/_cluster_setup -d '{"action":"enable_cluster", "bind_address":"0.0.0.0", "username":"admin", "password":"happy", "port":5984, "node_count":"3", "remote_node":"{{ os_instance.results.1.openstack.public_v4 }}", "remote_current_user":"admin", "remote_current_password":"happy" }'
+      curl -X POST -H "Content-Type:application/json" http://admin:happy@{{ os_instance.results.0.openstack.public_v4 }}:5984/_cluster_setup -d '{"action":"add_node", "host":"{{ os_instance.results.1.openstack.public_v4 }}", "port":5984, "username":"admin", "password":"happy"}'
+      curl -X POST -H "Content-Type:application/json" http://admin:happy@{{ os_instance.results.0.openstack.public_v4 }}:5984/_cluster_setup -d '{"action":"enable_cluster", "bind_address":"0.0.0.0", "username":"admin", "password":"happy", "port":5984, "node_count":"3", "remote_node":"{{ os_instance.results.2.openstack.public_v4 }}", "remote_current_user":"admin", "remote_current_password":"happy" }'
+      curl -X POST -H "Content-Type:application/json" http://admin:happy@{{ os_instance.results.0.openstack.public_v4 }}:5984/_cluster_setup -d '{"action":"add_node", "host":"{{ os_instance.results.2.openstack.public_v4 }}", "port":5984, "username":"admin", "password":"happy"}'
+      curl -X POST -H "Content-Type:application/json" http://admin:happy@{{ os_instance.results.0.openstack.public_v4 }}:5984/_cluster_setup -d '{"action":"finish_cluster"}'
+
+
+- name: Modify testcouchdb/root/vm.args
+  blockinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/testcouchdb/root/vm.args
+    block: |
+      # Licensed under the Apache License, Version 2.0 (the "License"); you may not
+      # use this file except in compliance with the License. You may obtain a copy of
+      # the License at
+      #
+      #   http://www.apache.org/licenses/LICENSE-2.0
+      #
+      # Unless required by applicable law or agreed to in writing, software
+      # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+      # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+      # License for the specific language governing permissions and limitations under
+      # the License.
+
+      # Each node in the system must have a unique name. These are specified through
+      # the Erlang -name flag, which takes the form nodename@hostname. CouchDB
+      # recommends the following values for this flag:
+      #
+      # 1. If this is a single node, not in a cluster, use:
+      #    -name couchdb@127.0.0.1
+      # 2. If DNS is configured for this host, use the FQDN, such as:
+      #    -name couchdb@my.host.domain.com
+      # 3. If DNS isn't configured for this host, use IP addresses only, such as:
+      #    -name couchdb@192.168.0.1
+      #
+      # Do not rely on tricks with /etc/hosts or libresolv to handle anything
+      # other than the above 3 approaches correctly.
+      #
+      # Multiple CouchDBs running on the same machine can use couchdb1@, couchdb2@,
+      # etc.
+      -name couchdb@{{ os_instance.results.0.openstack.public_v4 }}
+
+      # All nodes must share the same magic cookie for distributed Erlang to work.
+      # Comment out this line if you synchronized the cookies by other means (using
+      # the ~/.erlang.cookie file, for example).
+      -setcookie monster
+
+      # Tell kernel and SASL not to log anything
+      -kernel inet_dist_listen_min 9100
+      -kernel inet_dist_listen_max 9200
+      -kernel error_logger silent
+      -sasl sasl_error_logger false
+
+      # Use kernel poll functionality if supported by emulator
+      +K true
+
+      # Start a pool of asynchronous IO threads
+      +A 16
+
+      # Comment this line out to enable the interactive Erlang shell on startup
+      +Bd -noinput
+
+      # Force use of the smp scheduler, fixes #1296
+      -smp enable
+
+      # Set maximum SSL session lifetime to reap terminated replication readers
+      -ssl session_lifetime 300
+
+
+
+
+- name: Modify testcouchdb/sub1/vm.args
+  blockinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/testcouchdb/sub1/vm.args
+    block: |
+      # Licensed under the Apache License, Version 2.0 (the "License"); you may not
+      # use this file except in compliance with the License. You may obtain a copy of
+      # the License at
+      #
+      #   http://www.apache.org/licenses/LICENSE-2.0
+      #
+      # Unless required by applicable law or agreed to in writing, software
+      # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+      # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+      # License for the specific language governing permissions and limitations under
+      # the License.
+
+      # Each node in the system must have a unique name. These are specified through
+      # the Erlang -name flag, which takes the form nodename@hostname. CouchDB
+      # recommends the following values for this flag:
+      #
+      # 1. If this is a single node, not in a cluster, use:
+      #    -name couchdb@127.0.0.1
+      # 2. If DNS is configured for this host, use the FQDN, such as:
+      #    -name couchdb@my.host.domain.com
+      # 3. If DNS isn't configured for this host, use IP addresses only, such as:
+      #    -name couchdb@192.168.0.1
+      #
+      # Do not rely on tricks with /etc/hosts or libresolv to handle anything
+      # other than the above 3 approaches correctly.
+      #
+      # Multiple CouchDBs running on the same machine can use couchdb1@, couchdb2@,
+      # etc.
+      -name couchdb@{{ os_instance.results.1.openstack.public_v4 }}
+
+      # All nodes must share the same magic cookie for distributed Erlang to work.
+      # Comment out this line if you synchronized the cookies by other means (using
+      # the ~/.erlang.cookie file, for example).
+      -setcookie monster
+
+      # Tell kernel and SASL not to log anything
+      -kernel inet_dist_listen_min 9100
+      -kernel inet_dist_listen_max 9200
+      -kernel error_logger silent
+      -sasl sasl_error_logger false
+
+      # Use kernel poll functionality if supported by emulator
+      +K true
+
+      # Start a pool of asynchronous IO threads
+      +A 16
+
+      # Comment this line out to enable the interactive Erlang shell on startup
+      +Bd -noinput
+
+      # Force use of the smp scheduler, fixes #1296
+      -smp enable
+
+      # Set maximum SSL session lifetime to reap terminated replication readers
+      -ssl session_lifetime 300
+
+
+
+- name: Modify testcouchdb/sub2/vm.args
+  blockinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/testcouchdb/sub2/vm.args
+    block: |
+      # Licensed under the Apache License, Version 2.0 (the "License"); you may not
+      # use this file except in compliance with the License. You may obtain a copy of
+      # the License at
+      #
+      #   http://www.apache.org/licenses/LICENSE-2.0
+      #
+      # Unless required by applicable law or agreed to in writing, software
+      # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+      # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+      # License for the specific language governing permissions and limitations under
+      # the License.
+
+      # Each node in the system must have a unique name. These are specified through
+      # the Erlang -name flag, which takes the form nodename@hostname. CouchDB
+      # recommends the following values for this flag:
+      #
+      # 1. If this is a single node, not in a cluster, use:
+      #    -name couchdb@127.0.0.1
+      # 2. If DNS is configured for this host, use the FQDN, such as:
+      #    -name couchdb@my.host.domain.com
+      # 3. If DNS isn't configured for this host, use IP addresses only, such as:
+      #    -name couchdb@192.168.0.1
+      #
+      # Do not rely on tricks with /etc/hosts or libresolv to handle anything
+      # other than the above 3 approaches correctly.
+      #
+      # Multiple CouchDBs running on the same machine can use couchdb1@, couchdb2@,
+      # etc.
+      -name couchdb@{{ os_instance.results.2.openstack.public_v4 }}
+
+      # All nodes must share the same magic cookie for distributed Erlang to work.
+      # Comment out this line if you synchronized the cookies by other means (using
+      # the ~/.erlang.cookie file, for example).
+      -setcookie monster
+
+      # Tell kernel and SASL not to log anything
+      -kernel inet_dist_listen_min 9100
+      -kernel inet_dist_listen_max 9200
+      -kernel error_logger silent
+      -sasl sasl_error_logger false
+
+      # Use kernel poll functionality if supported by emulator
+      +K true
+
+      # Start a pool of asynchronous IO threads
+      +A 16
+
+      # Comment this line out to enable the interactive Erlang shell on startup
+      +Bd -noinput
+
+      # Force use of the smp scheduler, fixes #1296
+      -smp enable
+
+      # Set maximum SSL session lifetime to reap terminated replication readers
+      -ssl session_lifetime 300
+

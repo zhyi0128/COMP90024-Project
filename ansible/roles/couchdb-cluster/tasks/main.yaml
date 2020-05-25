@@ -1,10 +1,19 @@
 ---
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883718
+
 - name: Copy root from local to remote
   copy:
     src: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/curl-cluster.sh
     dest: /home/ubuntu/couchdb-docker-set-up
 
-- name: chmod 777
+- name: chmod 777 curl-cluster.sh
   become: yes
   command: chmod 777 /home/ubuntu/couchdb-docker-set-up/curl-cluster.sh
 
