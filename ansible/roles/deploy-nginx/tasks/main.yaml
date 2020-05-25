@@ -1,0 +1,39 @@
+---
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883718
+
+- name: Check nginx folder
+  stat:
+    path: /home/ubuntu/nginxhttp
+  register: nginx_dir
+
+- name: create app folder
+  file:
+    path: /home/ubuntu/nginxhttp
+    state: directory
+    mode: 0777
+  when: nginx_dir.stat.exists == false
+
+- name: Copy nginx from local to remote
+  copy:
+    src: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/nginxhttp/
+    dest: /home/ubuntu/nginxhttp
+
+- name: chmod 777 -R 
+  become: yes
+  command: chmod 777 -R /home/ubuntu/nginxhttp
+
+- name: stop docker-compose
+  become: yes
+  raw: cd /home/ubuntu/nginxhttp; docker-compose down --rmi all
+
+- name: start docker-compose
+  become: yes
+  raw: cd /home/ubuntu/nginxhttp; docker-compose up --build --force-recreate -d
+

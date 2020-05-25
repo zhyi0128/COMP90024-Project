@@ -1,4 +1,0 @@
----
-- name: 删除container
-  become: yes
-  command: docker container rm 

@@ -1,10 +1,41 @@
 ---
-# - name: run python with canberra
-#   shell: nohup python3 tweepy_search_canberra_may_3rd.py > /dev/null 2>&1 &
-#   args:
-#     chdir: /home/ubuntu/crawler/
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883718
 
-- name: run python with darwin
-  shell: nohup python3 tweepy_search_darwin_may_3rd.py > /dev/null 2>&1 &
+- name: run python with canberra_search
+  shell: nohup python3 tweepy_search_canberra.py > canberra 2>&1 &
   args:
-    chdir: /home/ubuntu/crawler/
+    chdir: /home/ubuntu/crawler/tweepy
+
+- name: run python with darwin_search
+  shell: nohup python3 tweepy_search_darwin.py > darwin 2>&1 &
+  args:
+    chdir: /home/ubuntu/crawler/tweepy
+
+
+# - name: run python with canberra_stream
+#   shell: nohup python3 tweepy_stream_canberra_4thmay.py > /dev/null 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_stream
+
+# - name: run python with darwin_stream
+#   shell: nohup python3 tweepy_stream_darwin_4thmay.py > /dev/null 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_stream
+
+
+# - name: run python with canberra_scenario
+#   shell: nohup python3 scenario_canberra_may_3rd.py > canberra 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_scenario
+
+# - name: run python with darwin_scenario
+#   shell: nohup python3 scenario_darwin_may_3rd.py > darwin 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_scenario
