@@ -6,7 +6,7 @@
 # Zheng Xu      785974
 # Zeng Tian     1072955
 # Miaoqin Li    998914
-# Yuming Lin    883718
+# Yuming Lin    883717
 
 - name: Create an instance
   os_server:
