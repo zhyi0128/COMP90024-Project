@@ -16,12 +16,12 @@ SCENARIO_DATABASE_NAME = 'scenario_city'
 
 
 def tweepy_tokens(greater_citys_id):
-    consumer_key = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['consumer_key']
-    consumer_secret = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['consumer_secret']
-    access_token = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['access_token']
-    access_token_secret = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['access_token_secret']
-    auth = tweepy.AppAuthHandler(consumer_key, consumer_secret)
-    return tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+    key = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['consumer_key']
+    secret = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['consumer_secret']
+    token = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['access_token']
+    token_secret = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['access_token_secret']
+    authentication = tweepy.AppAuthHandler(key, secret)
+    return tweepy.API(authentication, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
 
 def create_couchdb():
@@ -123,6 +123,6 @@ if __name__ == '__main__':
             print(AllException)
             time.sleep(500)
             continue
-        
+
     print('time used: ', time.time() - start)
     print(no_geo_count, no_coordinates, no_place)
