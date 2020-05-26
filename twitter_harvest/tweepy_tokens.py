@@ -1,4 +1,4 @@
-app_keys_tokens = [
+all_keys_and_tokens = [
 {'consumer_key' : 'CP20F8yCMC85K26XY07w4XElp',
 'consumer_secret' : '4t1r4cdlBPGVzkosnZ2gvBqXbet5MbuJIlkuN0JKYufWIdo4yM',
 'access_token' : '1121041186305630208-hG4Jv9cfPOufx3vAgPpBUCODlWsHQH',
@@ -42,7 +42,7 @@ app_keys_tokens = [
 
 
 
-search_appid = {
+greater_citys_id = {
 	'melbourne': 0,
 	'sydney': 1,
 	'brisbane': 2,
@@ -52,7 +52,3 @@ search_appid = {
 	'adelaide': 6,
 	'darwin': 7
 }
-
-
-
-
