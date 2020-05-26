@@ -1,10 +1,39 @@
 ---
-- name: run python with adelaide
-  shell: nohup python3 tweepy_search_adelaide_may_3rd.py > /dev/null 2>&1 &
-  args:
-    chdir: /home/ubuntu/crawler/
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883717
 
-- name: run python with brisbane
-  shell: nohup python3 tweepy_search_brisbane_may_3rd.py > /dev/null 2>&1 &
+- name: run python with adelaide_search
+  shell: nohup python3 tweepy_search_adelaide.py > adelaide 2>&1 &
   args:
-    chdir: /home/ubuntu/crawler/
+    chdir: /home/ubuntu/crawler/tweepy
+
+- name: run python with brisbane_search
+  shell: nohup python3 tweepy_search_brisbane.py > brisbane 2>&1 &
+  args:
+    chdir: /home/ubuntu/crawler/tweepy
+
+# - name: run python with adelaide_stream
+#   shell: nohup python3 tweepy_stream_adelaide_4thmay.py > /dev/null 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_stream
+
+# - name: run python with brisbane_stream
+#   shell: nohup python3 tweepy_stream_brisbane_4thmay.py > /dev/null 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_stream
+
+# - name: run python with adelaide_scenario
+#   shell: nohup python3 scenario_adelaide_may_3rd.py > adelaide 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_scenario
+
+# - name: run python with brisbane_scenario
+#   shell: nohup python3 scenario_brisbane_may_3rd.py > brisbane 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_scenario

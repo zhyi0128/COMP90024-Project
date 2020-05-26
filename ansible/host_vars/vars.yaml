@@ -1,3 +1,12 @@
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883717
+
 # Common vars
 availability_zone: melbourne-qh2-uom
 
@@ -57,7 +66,7 @@ security_groups:
     port_range_max: 9200
     remote_ip_prefix: 0.0.0.0/0
   - name: uwsgi
-    description: Open port 5000 for flask running
+    description: Open port 9090 for flask running
     protocol: tcp
     port_range_min: 9090
     port_range_max: 9090
@@ -67,6 +76,12 @@ security_groups:
     protocol: tcp
     port_range_min: 5000
     port_range_max: 5000
+    remote_ip_prefix: 0.0.0.0/0
+  - name: swarm
+    description: Open port 2377 for swarm
+    protocol: tcp
+    port_range_min: 2377
+    port_range_max: 2377
     remote_ip_prefix: 0.0.0.0/0
   - name: icmp
     description: Open icmp for ping
@@ -78,12 +93,12 @@ security_groups:
 
 # Instance
 instances: 
-  # - name: db-root
-  #   volumes: volumeA
-  # - name: db-sub1
-  #   volumes: volumeB
-  # - name: db-sub2
-  #   volumes: volumeC
+  - name: db-root
+    volumes: volumeA
+  - name: db-sub1
+    volumes: volumeB
+  - name: db-sub2
+    volumes: volumeC
   - name: web-server
     volumes: volumeD
 
@@ -95,3 +110,20 @@ instance_flavor: uom.mse.2c9g
 # instance_flavor: uom.general.1c4g
 #instance_network: qh2-uom
 instance_network: qh2-uom-internal
+
+
+# BEGIN ANSIBLE MANAGED BLOCK
+root_ip: 172.26.134.54
+sub1_ip: 172.26.131.230
+sub2_ip: 172.26.133.121
+web_ip: 172.26.130.42
+
+flask:
+  - root: 172.26.134.54
+  - sub1: 172.26.131.230
+  - sub2: 172.26.133.121
+# END ANSIBLE MANAGED BLOCK
+
+# BEGIN SWARM ANSIBLE MANAGED BLOCK
+swarm_token: SWMTKN-1-42x5qgxst3s0u7omf21asaj1e8xunm3dk71os99ohsy9fwvnr8-9udzk2yr36snbo83um1odrlsv
+# END SWARM ANSIBLE MANAGED BLOCK

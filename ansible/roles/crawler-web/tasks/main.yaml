@@ -1,10 +1,41 @@
 ---
-- name: run python with perth
-  shell: nohup python3 tweepy_search_perth_may_3rd.py > /dev/null 2>&1 &
-  args:
-    chdir: /home/ubuntu/crawler/
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883717
 
-- name: run python with sydney
-  shell: nohup python3 tweepy_search_sydney_may_3rd.py > /dev/null 2>&1 &
+- name: run python with perth_search
+  shell: nohup python3 tweepy_search_perth.py > perth 2>&1 &
   args:
-    chdir: /home/ubuntu/crawler/
+    chdir: /home/ubuntu/crawler/tweepy
+
+- name: run python with sydney_search
+  shell: nohup python3 tweepy_search_sydney.py > sydney 2>&1 &
+  args:
+    chdir: /home/ubuntu/crawler/tweepy
+
+
+# - name: run python with perth_stream
+#   shell: nohup python3 tweepy_stream_perth_4thmay.py > /dev/null 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_stream
+
+# - name: run python with sydney_stream
+#   shell: nohup python3 tweepy_stream_sydney_4thmay.py > /dev/null 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_stream
+
+
+# - name: run python with perth_scenario
+#   shell: nohup python3 scenario_perth_may_3rd.py > perth 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_scenario
+
+# - name: run python with sydney_scenario
+#   shell: nohup python3 scenario_sydney_may_3rd.py > sydney 2>&1 &
+#   args:
+#     chdir: /home/ubuntu/crawler/tweepy_scenario

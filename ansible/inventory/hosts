@@ -5,15 +5,15 @@ ansible_ssh_private_key_file=~/.ssh/yml.pem
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 # BEGIN ANSIBLE MANAGED BLOCK
 [root]
-172.26.132.133
+172.26.134.54
 [sub1]
-172.26.132.58
+172.26.131.230
 [sub2]
-172.26.132.2
+172.26.133.121
 [web]
-172.26.130.14
+172.26.130.42
 [flask]
-172.26.132.133
-172.26.132.58
-172.26.132.2
+172.26.134.54
+172.26.131.230
+172.26.133.121
 # END ANSIBLE MANAGED BLOCK

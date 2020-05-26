@@ -1,4 +1,23 @@
 ---
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883717
+
+- name: Create a folder to put docker-compose
+  file:
+    path: /home/ubuntu/couchdb-docker-set-up
+    state: directory
+    mode: 0777
+
+- name: chmod 777 -R /home/ubuntu/couchdb-docker-set-up
+  become: yes
+  command: chmod 777 -R /home/ubuntu/couchdb-docker-set-up
+
 - name: Copy sub2 from local to remote
   copy:
     src: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/testcouchdb/sub2

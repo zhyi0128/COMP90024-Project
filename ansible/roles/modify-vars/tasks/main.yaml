@@ -1,0 +1,82 @@
+---
+# COMP90024 Cluster and Cloud Computing 2020 Semester1
+# This project is developed by Group38
+#
+# Zhe Wang      951996
+# Zheng Xu      785974
+# Zeng Tian     1072955
+# Miaoqin Li    998914
+# Yuming Lin    883717
+
+# this should be copy for 8 python file
+- name: Replace a localhost in to python search
+  lineinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/tweepy/tweepy_search_adelaide.py
+    regexp: '172.[0-9]+.[0-9]+.[0-9]+'
+    line: "IP_ADDRESS = '{{ root_ip }}'"
+    mode: 0777
+    state: present
+    backrefs: yes
+
+- name: Replace a localhost in to python search
+  lineinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/tweepy/tweepy_search_brisbane.py
+    regexp: '172.[0-9]+.[0-9]+.[0-9]+'
+    line: "IP_ADDRESS = '{{ root_ip }}'"
+    mode: 0777
+    state: present
+    backrefs: yes
+
+- name: Replace a localhost in to python search
+  lineinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/tweepy/tweepy_search_canberra.py
+    regexp: '172.[0-9]+.[0-9]+.[0-9]+'
+    line: "IP_ADDRESS = '{{ root_ip }}'"
+    mode: 0777
+    state: present
+    backrefs: yes
+
+- name: Replace a localhost in to python search
+  lineinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/tweepy/tweepy_search_darwin.py
+    regexp: '172.[0-9]+.[0-9]+.[0-9]+'
+    line: "IP_ADDRESS = '{{ root_ip }}'"
+    mode: 0777
+    state: present
+    backrefs: yes
+
+- name: Replace a localhost in to python search
+  lineinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/tweepy/tweepy_search_hobart.py
+    regexp: '172.[0-9]+.[0-9]+.[0-9]+'
+    line: "IP_ADDRESS = '{{ root_ip }}'"
+    mode: 0777
+    state: present
+    backrefs: yes
+
+- name: Replace a localhost in to python search
+  lineinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/tweepy/tweepy_search_melbourne.py
+    regexp: '172.[0-9]+.[0-9]+.[0-9]+'
+    line: "IP_ADDRESS = '{{ root_ip }}'"
+    mode: 0777
+    state: present
+    backrefs: yes
+
+- name: Replace a localhost in to python search
+  lineinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/tweepy/tweepy_search_perth.py
+    regexp: '172.[0-9]+.[0-9]+.[0-9]+'
+    line: "IP_ADDRESS = '{{ root_ip }}'"
+    mode: 0777
+    state: present
+    backrefs: yes
+
+- name: Replace a localhost in to python search
+  lineinfile:
+    path: /Users/linyuming/Unimelb/COMP 90024 Cluster and Cloud Computing/assignment2/ansible/tweepy/tweepy_search_sydney.py
+    regexp: '172.[0-9]+.[0-9]+.[0-9]+'
+    line: "IP_ADDRESS = '{{ root_ip }}'"
+    mode: 0777
+    state: present
+    backrefs: yes

@@ -1,129 +1,137 @@
-import config
 import tweepy
+import tweepy_tokens
 import time
 import datetime
 import couchdb
+import ssl
+import scenario_cities
 
 start = time.time()
+ssl._create_default_https_context = ssl._create_unverified_context
+IP_ADDRESS = '172.26.134.54'
+USERNAME = 'admin'
+PASSWORD = 'happy'
+ORIGINAL_DATABASE_NAME = 'may_18th_adelaide'
+SCENARIO_DATABASE_NAME = 'scenario_city'
+# ORIGINAL_DATABASE_NAME = 'may_18th_brisbane'
+# ORIGINAL_DATABASE_NAME = 'may_18th_canberra'
+# ORIGINAL_DATABASE_NAME = 'may_18th_darwin'
+# ORIGINAL_DATABASE_NAME = 'may_18th_hobart'
+# ORIGINAL_DATABASE_NAME = 'may_18th_melbourne'
+# ORIGINAL_DATABASE_NAME = 'may_18th_perth'
+# ORIGINAL_DATABASE_NAME = 'may_18th_sydney'
 
-def get_api(key_index):
-    consumer_key = config.app_keys_tokens[key_index]['consumer_key']
-    consumer_secret = config.app_keys_tokens[key_index]['consumer_secret']
-    access_token = config.app_keys_tokens[key_index]['access_token']
-    access_token_secret = config.app_keys_tokens[key_index]['access_token_secret']
-    auth = tweepy.AppAuthHandler(consumer_key, consumer_secret)
-    return tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+
+
+
+def tweepy_tokens(greater_citys_id):
+    key = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['consumer_key']
+    secret = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['consumer_secret']
+    token = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['access_token']
+    token_secret = tweepy_tokens.all_keys_and_tokens[greater_citys_id]['access_token_secret']
+    authentication = tweepy.AppAuthHandler(key, secret)
+    return tweepy.API(authentication, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+
+
+def create_couchdb():
+    server = couchdb.Server("http://%s:%s@%s:5984/" %
+                            (USERNAME, PASSWORD, IP_ADDRESS))
+    try:
+        original_database = server.create(ORIGINAL_DATABASE_NAME)
+        scenario_database = server.create(SCENARIO_DATABASE_NAME)
+    except:
+        original_database = server[ORIGINAL_DATABASE_NAME]
+        scenario_database = server[SCENARIO_DATABASE_NAME]
+    return original_database, scenario_database
+
+
+def process_tweets(raw_tweets, no_geo_count, no_coordinates, no_place):
+    tweet = raw_tweets.next()._json
+    if tweet['is_quote_status'] == True and 'quoted_status' in tweet:
+        quoted_status = tweet['quoted_status']
+    else:
+        quoted_status = None
+
+    if tweet['geo'] == None:
+        no_geo_count += 1
+    else:
+        no_geo_count = no_geo_count
+
+    if tweet['coordinates'] == None:
+        no_coordinates += 1
+    else:
+        no_coordinates = no_coordinates
+
+    if tweet['place'] == None:
+        no_place += 1
+    else:
+        no_place = no_place
+    # if (tweet['place'] is not None
+    #     or (tweet['geo'] is not None
+    #         or(tweet['place'] is not None))):
+
+    original_dic = {
+        '_id': tweet['id_str'],
+        'created_at': tweet['created_at'],
+        'full_text': tweet['full_text'],
+        'entities': tweet['entities'],
+        # 'source': tweet['source'],
+        'user': tweet['user'],
+        'geo': tweet['geo'],
+        'coordinates': tweet['coordinates'],
+        'place': tweet['place'],
+        'lang': tweet['lang'],
+        # 'favorite_count': tweet['favorite_count'],
+        'is_quote_status': tweet['is_quote_status'],
+        'quoted_status': quoted_status,
+    }
+
+    return original_dic, no_geo_count, no_coordinates, no_place
 
 
 if __name__ == '__main__':
-    # key_index = config.search_appid['melbourne']
-    # key_index = config.search_appid['sydney']
-    # key_index = config.search_appid['brisbane']
-    # key_index = config.search_appid['perth']
-    # key_index = config.search_appid['canberra']
-    # key_index = config.search_appid['hobart']
-    key_index = config.search_appid['adelaide']
-    # key_index = config.search_appid['Darwin']
-    api = get_api(key_index = key_index)
+    greater_citys_id = tweepy_tokens.greater_citys_id['adelaide']
+    tweepy_api = tweepy_tokens(greater_citys_id=greater_citys_id)
 
-    server = couchdb.Server("http://%s:%s@172.26.132.58:5984/" % ('admin', 'project'))
-    db_name = 'may_3rd_adelaide'
+    original_database, scenario_database = create_couchdb()
 
-    try:
-        db = server.create(db_name)
-    except:
-        db = server[db_name]
-
-    #set date
-    sincedate = datetime.date.today() - datetime.timedelta(days=7)
-    untildate = datetime.date.today()
-    # geocode = "%f,%f,%fkm" % (-37.817457, 145.002606, 300)
-    # centre of australia
-    # #Australia
-    # geocode = "%f,%f,%fkm" % (-25.2744, 133.7751, 3000)
-    # melbourne
-    # centre of melbourne with radius 40 km
-    # geocode = "%f,%f,%fkm" % (-37.8142385,144.9622775,40)
-    # sydney
-    # geocode = "%f,%f,%fkm" % (-33.8559799094,151.20666584,50)
-    # brisbane
-    # geocode = "%f,%f,%fkm" % (-27.3812533,152.713015,40)
-    # perth
-    # geocode = "%f,%f,%fkm" % (-32.0391738,115.6813561,40)
-    # # canberra
-    # geocode = "%f,%f,%fkm" % (-35.2812958,149.124822,40)
-    # # hobart
-    # geocode = "%f,%f,%fkm" % (-42.8823389,147.3110468,40)
-    # adelaide
-    geocode = "%f,%f,%fkm" % (-34.9998826,138.3309816,40)
-    # # Darwin
-    # geocode = "%f,%f,%fkm" % (-12.4634,130.8456,40)
-
-    #search api method
-    tweets = tweepy.Cursor(api.search, q='*',since=sincedate, until=untildate, \
-                        geocode = geocode,count=100, tweet_mode='extended',lang="en").items()
+    # set date
+    start_time = datetime.date.today() - datetime.timedelta(days=7)
+    end_time = datetime.date.today()
+    # adelaide latitude longitude
+    geocode = "%f,%f,%fkm" % (-34.9998826, 138.3309816, 40)
+    # search tweepy_api method
+    raw_tweets = tweepy.Cursor(tweepy_api.search, q='*', since=start_time, until=end_time,
+                               geocode=geocode, count=100, tweet_mode='extended', lang="en").items()
     no_geo_count = 0
     no_coordinates = 0
     no_place = 0
-    print('---------- collecting Tweets ----------')
+    print("Twitter harvest begin")
     while True:
         try:
-            tweet = tweets.next()._json
-            if tweet['is_quote_status'] == True and 'quoted_status' in tweet:
-                quoted_status = tweet['quoted_status']
-            else:
-                quoted_status = None
-            if tweet['geo'] == None:
-                no_geo_count +=1
-            else:
-                no_geo_count = no_geo_count
+            original_dic, no_geo_count, no_coordinates, no_place = process_tweets(
+                raw_tweets, no_geo_count, no_coordinates, no_place)
+            original_database.save(original_dic)
+            scenario_dic = scenario_cities.execute_adelaide(
+                original_dic['_id'], original_dic['full_text'])
 
-            if tweet['coordinates'] == None:
-                no_coordinates += 1
-            else:
-                no_coordinates = no_coordinates
+            if scenario_dic != {}:
+                scenario_database.save(scenario_dic)
 
-            if tweet['place'] == None:
-                no_place += 1
-            else:
-                no_place = no_place
-            # if (tweet['place'] is not None
-            #     or (tweet['geo'] is not None
-            #         or(tweet['place'] is not None))):
-
-
-            new_dic = {
-                '_id': tweet['id_str'],
-                'created_at': tweet['created_at'],
-                'full_text': tweet['full_text'],
-                'entities': tweet['entities'],
-                # 'source': tweet['source'],
-                'user': tweet['user'],
-                'geo': tweet['geo'],
-                'coordinates': tweet['coordinates'],
-                'place': tweet['place'],
-                'lang': tweet['lang'],
-                # 'favorite_count': tweet['favorite_count'],
-                'is_quote_status': tweet['is_quote_status'],
-                'quoted_status': quoted_status,
-            }
-            db.save(new_dic)
         except couchdb.http.ResourceConflict:
             pass
-        except tweepy.TweepError as e1:
-            print(e1.reason)
-            print('tweet limit!!!')
-            time.sleep(60 * 15)
+        except tweepy.TweepError as TimeLimiteError:
+            print(TimeLimiteError.reason)
+            print("time out of time range")
+            time.sleep(1000)
             continue
-        except StopIteration as e2:
-            print("Finish search!")
+        except StopIteration as FinishHarvest:
+            print("all done")
             break
-        except Exception as e3:
-            print(e3)
-            time.sleep(60 * 5)
+        except Exception as AllException:
+            print(AllException)
+            time.sleep(500)
             continue
+
     print('time used: ', time.time() - start)
-    print(no_geo_count,no_coordinates,no_place)
-
-
-
+    print(no_geo_count, no_coordinates, no_place)

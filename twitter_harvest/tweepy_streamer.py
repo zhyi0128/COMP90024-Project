@@ -4,8 +4,17 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 
 
-server = couchdb.Server("http://%s:%s@172.26.132.58:5984/" % ('admin', 'happy'))
-db_name = 'may_4rd_australia'
+server = couchdb.Server("http://%s:%s@172.26.134.54:5984/" % ('admin', 'happy'))
+db_name = 'stream_may_18th_adelaide'
+# db_name = 'stream_may_18th_brisbane'
+# db_name = 'stream_may_18th_canberra'
+# db_name = 'stream_may_18th_darwin'
+# db_name = 'stream_may_18th_hobart'
+# db_name = 'stream_may_18th_melbourne'
+# db_name = 'stream_may_18th_perth'
+# db_name = 'stream_may_18th_sydney'
+
+
 
 try:
     db = server.create(db_name)
@@ -98,7 +107,7 @@ if __name__ == '__main__':
     hash_tag_list = ['virus', 'Covid-19', 'coronavirus']
     stream = Stream(auth, TwitterListener())
     #Australia
-    stream.filter(locations=[112.9211, -54.6403, 159.2787, -9.2288])
+    # stream.filter(locations=[112.9211, -54.6403, 159.2787, -9.2288])
     # #melbourne
     # # stream.filter(locations=[143.3525, -38.3136, 145.3657, -36.9475])
     # #sydney
@@ -106,7 +115,7 @@ if __name__ == '__main__':
     # # #brisbane
     # stream.filter(locations=[152.2445, -28.5698, 154.02517, -26.6241])
     # # #adelaide
-    # stream.filter(locations=[137.58321, -35.9285, 139.7231, -33.8532])
+    stream.filter(locations=[137.58321, -35.9285, 139.7231, -33.8532])
     # #canberra
     # stream.filter(locations=[148.0834, -36.3206, 150.1324, -34.2709])
     # #darwin

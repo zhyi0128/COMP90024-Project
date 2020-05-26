@@ -1,3 +1,4 @@
+# BEGIN ANSIBLE MANAGED BLOCK
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
 # the License at
@@ -26,7 +27,7 @@
 #
 # Multiple CouchDBs running on the same machine can use couchdb1@, couchdb2@,
 # etc.
--name couchdb@172.26.132.58
+-name couchdb@172.26.131.230
 
 # All nodes must share the same magic cookie for distributed Erlang to work.
 # Comment out this line if you synchronized the cookies by other means (using
@@ -53,3 +54,4 @@
 
 # Set maximum SSL session lifetime to reap terminated replication readers
 -ssl session_lifetime 300
+# END ANSIBLE MANAGED BLOCK
