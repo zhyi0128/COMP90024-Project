@@ -241,7 +241,7 @@
         curTopic: null,
         curArea: null,
         curLocation: null,
-        curLabel: 'size',
+        curLabel: 'sentiment',
         curModal: null,
         curAnalysis: 'descriptive',
         analyzer: {
@@ -654,7 +654,6 @@
             showClose: true
           })
         }, 2000)
-
 
         function getColor (thisObj, colors, name) {
           let index = -1
