@@ -4,7 +4,7 @@
     <div class="background"></div>
     <div class="center">
       <p style="text-align: center">
-        <el-button onclick="window.location.href='/map'" type="primary" style="font-size: 23px; font-weight: 500" round>
+        <el-button onclick="window.location.href='/map'" type="primary" style="font-size: 22px; font-weight: 500" round>
           Explore Now</el-button>
       </p>
     </div>
@@ -35,7 +35,7 @@
     background-size: cover;
     -webkit-background-size: cover;
     -o-background-size: cover;
-    background-position: center 0;
+    background-position: center;
   }
 
   .center{
